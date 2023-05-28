@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Fun Facts</title>
   </head>
+
   <body>
     <header>
       <img src="resources/logo.png" alt="Fun Facts Logo" />
@@ -13,19 +14,20 @@
       <button>Share a fact!</button>
     </header>
 
+    <form action="">
+      <input type="text" placeholder="Share a fact..." />
+      <span>200</span>
+      <input type="text" placeholder="Source..." />
+      <select>
+        <option value="">All</option>
+        <option value="">Technology</option>
+        <option value="">Science</option>
+        <option value="">Finance</option>
+      </select>
+      <button>Post</button>
+    </form>
+
     <main>
-      <form action="">
-        <input type="text" placeholder="Share a fact..." />
-        <span>200</span>
-        <input type="text" placeholder="Source..." />
-        <select>
-          <option value="">All</option>
-          <option value="">Technology</option>
-          <option value="">Science</option>
-          <option value="">Finance</option>
-        </select>
-        <button>Post</button>
-      </form>
       <aside>
         <ul>
           <li><button>All</button></li>
@@ -34,6 +36,7 @@
           <li><button>Finance</button></li>
         </ul>
       </aside>
+
       <section>
         <ul>
           <li>
