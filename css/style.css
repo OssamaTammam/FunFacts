@@ -1,0 +1,159 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.content {
+    margin: 0 auto;
+    max-width: 1500px;
+}
+
+.header {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    margin: 1rem 2rem;
+}
+
+.logo {
+    align-items: center;
+    display: flex;
+}
+
+
+h1 {
+    font-family: 'Kalam', cursive;
+    font-size: 4.5rem;
+    margin-left: 2rem;
+    margin-top: 1.5rem;
+    text-transform: uppercase;
+}
+
+.fact-form {
+    background-color: #393E46;
+    margin: .5rem;
+    padding: .5rem;
+    text-align: center;
+}
+
+.main {
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: 1fr 3fr;
+    margin: 1rem .5rem;
+}
+
+body {
+    background-color: #222831;
+    color: #EEEEEE;
+    font-family: 'Raleway', sans-serif;
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
+
+.sidebar {
+    text-align: center;
+}
+
+.fact {
+    align-items: center;
+    background-color: #393E46;
+    display: flex;
+    gap: 1rem;
+    margin-bottom: .5rem;
+    padding: .5rem 1rem;
+}
+
+.tag {
+    background-color: red;
+    border-radius: 100rem;
+    font-weight: bold;
+    margin: 1rem;
+    padding: .2rem .7rem;
+    text-transform: uppercase;
+}
+
+.reaction-btns {
+    align-items: center;
+    display: flex;
+    flex-shrink: 0;
+    gap: .5rem;
+    margin-left: auto;
+}
+
+.reaction-btns button {
+    background-color: #374151;
+    border: 0;
+    border-radius: 100rem;
+    color: inherit;
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: bold;
+    padding: .1rem .2rem;
+    transition: .3s;
+}
+
+.reaction-btns button:hover {
+    background-color: #4b5563;
+    cursor: pointer;
+}
+
+li {
+    list-style: none;
+}
+
+footer {
+    text-align: center;
+}
+
+
+a:link,
+a:visited {
+    color: #B55400;
+    text-decoration: none;
+    transition: .3s;
+}
+
+a:hover,
+a:active {
+    color: #FFC15E;
+}
+
+.btn {
+    background-color: #B55400;
+    border: none;
+    border-radius: 100rem;
+    color: inherit;
+    font-family: inherit;
+    font-weight: bold;
+    line-height: 1;
+    padding: .5rem 2rem;
+    text-transform: uppercase;
+    transition: .3s;
+}
+
+.btn:hover {
+    cursor: pointer;
+    transform: scale(110%) rotate(-2deg);
+}
+
+.btn-large {
+    font-size: larger;
+}
+
+.btn-category-all {
+    margin-bottom: 1rem;
+}
+
+.btn-category {
+    font-size: large;
+    width: 100%;
+}
+
+.categories li {
+    margin-bottom: 1rem;
+}
+
+footer {
+    line-height: 1.5rem;
+}
