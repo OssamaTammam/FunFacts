@@ -3,11 +3,13 @@
     padding: 0;
 }
 
+/* whole page */
 .content {
     margin: 0 auto;
     max-width: 1500px;
 }
 
+/* header and logo */
 .header {
     align-items: center;
     display: flex;
@@ -22,17 +24,39 @@
 
 
 h1 {
-    font-family: 'Kalam', cursive;
+    font-family: 'League Spartan', sans-serif;
     font-size: 4.5rem;
     margin-left: 2rem;
     margin-top: 1.5rem;
     text-transform: uppercase;
 }
 
+/* add fact form */
 .fact-form {
-    background-color: #393E46;
+    align-items: center;
+    background-color: #4F4F51;
+    border-radius: 2rem;
+    display: flex;
+    gap: 1rem;
     margin: .5rem;
-    padding: .5rem;
+    padding: .5rem 1rem;
+}
+
+
+
+body {
+    background-color: #232323;
+    color: #ffffff;
+    font-family: 'Libre Baskerville', serif;
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
+
+li {
+    list-style: none;
+}
+
+footer {
     text-align: center;
 }
 
@@ -43,30 +67,42 @@ h1 {
     margin: 1rem .5rem;
 }
 
-body {
-    background-color: #222831;
-    color: #EEEEEE;
-    font-family: 'Raleway', sans-serif;
-    margin-left: 1rem;
-    margin-right: 1rem;
+.sidebar {
+    align-items: stretch;
+    display: flex;
+    flex-direction: column;
 }
 
-.sidebar {
-    text-align: center;
+.categories li {
+    margin-bottom: 1rem;
 }
 
 .fact {
     align-items: center;
-    background-color: #393E46;
+    background-color: #474747;
+    border-radius: 2rem;
     display: flex;
     gap: 1rem;
     margin-bottom: .5rem;
-    padding: .5rem 1rem;
+    padding: 1rem 2rem;
+}
+
+.fact p {
+    width: 100%;
+}
+
+@media(max-width:74rem) {
+    .fact {
+        align-items: flex-end;
+        flex-direction: column;
+        gap: .5rem;
+    }
+
 }
 
 .tag {
-    background-color: red;
     border-radius: 100rem;
+    font-size: .7rem;
     font-weight: bold;
     margin: 1rem;
     padding: .2rem .7rem;
@@ -82,52 +118,44 @@ body {
 }
 
 .reaction-btns button {
-    background-color: #374151;
+    background-color: #595959;
     border: 0;
     border-radius: 100rem;
     color: inherit;
     font-family: inherit;
     font-size: 1rem;
     font-weight: bold;
-    padding: .1rem .2rem;
+    padding: .2rem .3rem;
     transition: .3s;
 }
 
 .reaction-btns button:hover {
-    background-color: #4b5563;
+    background-color: #353535;
     cursor: pointer;
-}
-
-li {
-    list-style: none;
-}
-
-footer {
-    text-align: center;
 }
 
 
 a:link,
 a:visited {
-    color: #B55400;
+    color: #ffc812;
     text-decoration: none;
     transition: .3s;
 }
 
 a:hover,
 a:active {
-    color: #FFC15E;
+    color: #d6a400;
 }
 
 .btn {
-    background-color: #B55400;
+    background-color: #000000;
     border: none;
     border-radius: 100rem;
     color: inherit;
     font-family: inherit;
     font-weight: bold;
     line-height: 1;
-    padding: .5rem 2rem;
+    padding: .8rem 2rem;
     text-transform: uppercase;
     transition: .3s;
 }
@@ -141,19 +169,90 @@ a:active {
     font-size: larger;
 }
 
-.btn-category-all {
-    margin-bottom: 1rem;
-}
-
 .btn-category {
     font-size: large;
     width: 100%;
 }
 
-.categories li {
+.btn-category-all {
     margin-bottom: 1rem;
 }
 
 footer {
     line-height: 1.5rem;
+}
+
+.fact-form input,
+.fact-form select {
+    background-color: #595959;
+    border: none;
+    border-radius: 100rem;
+    color: #ffffff;
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: bold;
+    padding: .5rem 1rem;
+}
+
+
+.fact-form input::placeholder {
+    color: #ffffff;
+}
+
+.fact-form span {
+    font-weight: bold;
+    margin-right: 1rem;
+}
+
+.fact-form input:first-child {
+    flex-grow: 1;
+}
+
+@media(max-width:1000px) {
+    .fact-form {
+        align-items: stretch;
+        flex-direction: column;
+        padding: 1rem;
+    }
+
+    .fact-form span {
+        margin-left: 1rem;
+    }
+
+    .main {
+        grid-template-columns: 1fr;
+    }
+
+    .header {
+        flex-direction: column;
+    }
+
+    .header button {
+        margin-top: 1rem;
+        width: 100%;
+    }
+
+    .btn:hover {
+        cursor: pointer;
+        transform: scale(105%);
+    }
+
+}
+
+footer {
+    align-items: center;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+    margin-bottom: 2rem;
+    width: 100%;
+
+}
+
+@media(min-width:1000px) {
+    footer {
+        bottom: 0;
+        position: absolute;
+    }
 }
