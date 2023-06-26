@@ -21,10 +21,10 @@
           <img src="resources/logo.png" alt="Fun Facts Logo" />
           <h1>Fun Facts</h1>
         </div>
-        <button class="btn btn-large">Share a fact!</button>
+        <button class="btn btn-large btn-open">Share a fact!</button>
       </header>
 
-      <form action="" class="fact-form">
+      <form action="" class="fact-form hidden">
         <input type="text" placeholder="Share a fact..." />
         <span>200</span>
         <input type="text" placeholder="Source..." />
@@ -50,14 +50,16 @@
         </aside>
 
         <section class="facts">
-          <ul>
+          <ul class="fact-list">
             <li class="fact">
               <p>
                 Millennial dads spend 3
                 <br />
                 <a href="f" target="_blank" class="source">(Source)</a>
               </p>
-              <span class="tag">Technology</span>
+              <span class="tag" style="background-color: aliceblue"
+                >Technology</span
+              >
               <div class="reaction-btns">
                 <button>👍 <strong>10</strong></button>
                 <button>👎 <strong>10</strong></button>
@@ -82,13 +84,14 @@
           </ul>
         </section>
       </main>
-      <footer>
+      <!-- <footer>
         <h2>Developed by Ossama Tammam</h2>
         <div>
           <a href="https://www.linkedin.com/in/ossamatammam/">LinkedIn</a>
           <a href="https://github.com/OssamaTammam">GitHub</a>
         </div>
-      </footer>
+      </footer> -->
     </div>
+    <script src="script.js"></script>
   </body>
 </html>
