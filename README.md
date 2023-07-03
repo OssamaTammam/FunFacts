@@ -11,7 +11,7 @@ A simple website built for fun to learn how to use web technologies such as Reac
 
 ## Technologies Used
 
-- HTML,CSS and Javascript: Basic web technologies 
+- HTML, CSS and Javascript: Basic web technologies 
 - React.js: Javascript library used to create the main page of the website and make it dynamic
 - Supabase: A database hosting website using a PostgresSQL database used to hold facts and votes.
 - Vercel: A deployment service used to deploy the website from the GitHub repo!
