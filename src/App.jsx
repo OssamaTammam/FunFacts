@@ -1,4 +1,7 @@
+import { useEffect, useState } from "react";
 import "./style.css";
+import isUrl from "is-url";
+import supabase from "./supabase";
 
 const CATEGORIES = [
   { name: "technology", color: "#3b82f6" },
@@ -45,33 +48,105 @@ const initialFacts = [
   },
 ];
 function App() {
-  const appTitle = "Fun Facts";
+  const [showForm, setForm] = useState(false);
+  const [facts, setFacts] = useState([]);
+  useEffect(function () {
+    async function getFacts() {
+      const { data: facts, error } = await supabase.from("facts").select("*");
+      setFacts(facts);
+    }
+    getFacts();
+  }, []);
+
   return (
     <>
       {/* Header */}
-      <header className="header">
-        <div className="logo">
-          <img src="logo.png" alt="Fun Facts Logo" />
-          <h1>{appTitle}</h1>
-        </div>
-        <button className="btn btn-large btn-open">Share a fact!</button>
-      </header>
-
+      <Header showForm={showForm} setForm={setForm} />
       {/* Fact Form */}
-      <NewFactForm />
+      {showForm ? (
+        <NewFactForm facts={facts} setFacts={setFacts} setForm={setForm} />
+      ) : null}
 
       <main className="main">
         {/* Side Bar */}
         <CategoryFilter />
 
         {/* Facts */}
-        <FactsList />
+        <FactsList facts={facts} />
       </main>
     </>
   );
 }
-function NewFactForm() {
-  return <form className="fact-form">Facts Form</form>;
+
+function Header({ showForm, setForm }) {
+  const appTitle = "Fun Facts";
+
+  return (
+    <header className="header">
+      <div className="logo">
+        <img src="logo.png" alt="Fun Facts Logo" />
+        <h1>{appTitle}</h1>
+      </div>
+      <button
+        className="btn btn-large btn-open"
+        onClick={() => setForm(!showForm)}
+      >
+        {showForm ? "Close" : "Share a fact!"}
+      </button>
+    </header>
+  );
+}
+function NewFactForm({ facts, setFacts, setForm }) {
+  const [text, setText] = useState("");
+  const [source, setSource] = useState("");
+  const [category, setCategory] = useState("");
+  let newFact;
+  function handleSubmit(e) {
+    e.preventDefault();
+    console.log(text, source, category);
+
+    if (text && text.length <= 200 && source && isUrl(source) && category) {
+      newFact = {
+        id: 300,
+        text,
+        source,
+        category,
+        voteslikes: 0,
+        votesdislike: 0,
+        votescrazy: 0,
+        createdIn: new Date().getFullYear(),
+      };
+    }
+    setFacts(() => [newFact, ...facts]);
+    setForm(false);
+  }
+
+  return (
+    <form className="fact-form" onSubmit={handleSubmit}>
+      <input
+        type="text"
+        placeholder="Share a fact..."
+        value={text}
+        onChange={(e) => setText(e.target.value)}
+      />
+      <span>{200 - text.length}</span>
+      <input
+        type="text"
+        placeholder="Source..."
+        value={source}
+        onChange={(e) => setSource(e.target.value)}
+      />
+      <select value={category} onChange={(e) => setCategory(e.target.value)}>
+        <option value="">Choose a category</option>
+        {CATEGORIES.map((cat) => (
+          <option key={cat.name} value={cat.name}>
+            {cat.name.toUpperCase()}
+          </option>
+        ))}
+      </select>
+      <button className="btn btn-large">Post</button>
+    </form>
+  );
 }
 
 function CategoryFilter() {
@@ -84,6 +159,7 @@ function CategoryFilter() {
         {CATEGORIES.map((cat) => (
           <li>
             <button
+              key={cat.name}
               className="btn btn-category"
               style={{ backgroundColor: cat.color }}
             >
@@ -96,9 +172,7 @@ function CategoryFilter() {
   );
 }
 
-function FactsList() {
-  //temp
-  const facts = initialFacts;
+function FactsList({ facts }) {
   return (
     <section className="facts">
       <ul className="facts-list">
@@ -132,7 +206,7 @@ function Fact({ fact }) {
       </span>
       <div className="reaction-btns">
         <button>
-          👍 <strong>{fact.voteslike}</strong>
+          👍 <strong>{fact.voteslikes}</strong>
         </button>
         <button>
           👎 <strong>{fact.votesdislike}</strong>
