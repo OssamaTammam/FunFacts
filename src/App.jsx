@@ -189,7 +189,7 @@ function FactsList({ facts, setFacts }) {
 
 function Fact({ fact, setFacts }) {
   const [isUpdating, setIsUpdating] = useState(false);
-
+  const isWrong = fact.votesdislike > fact.voteslike;
   async function handleVote(columnName) {
     setIsUpdating(true);
 
@@ -211,6 +211,12 @@ function Fact({ fact, setFacts }) {
   return (
     <li className="fact">
       <p>
+        {isWrong ? (
+          <span className="wrong">
+            [WRONG!]
+            <br />
+          </span>
+        ) : null}
         {fact.text}
         <br />
         <a href="{fact.source}" target="_blank" className="source">
