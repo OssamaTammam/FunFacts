@@ -14,49 +14,33 @@ const CATEGORIES = [
   { name: "news", color: "#8b5cf6" },
 ];
 
-const initialFacts = [
-  {
-    id: 1,
-    text: "React is being developed by Meta (formerly facebook)",
-    source: "https://opensource.fb.com/",
-    category: "technology",
-    voteslikes: 24,
-    votesdislike: 9,
-    votescrazy: 4,
-    createdIn: 2021,
-  },
-  {
-    id: 2,
-    text: "Millennial dads spend 3 times as much time with their kids than their fathers spent with them. In 1982, 43% of fathers had never changed a diaper. Today, that number is down to 3%",
-    source:
-      "https://www.mother.ly/parenting/millennial-dads-spend-more-time-with-their-kids",
-    category: "society",
-    voteslikes: 11,
-    votesdislike: 2,
-    votescrazy: 0,
-    createdIn: 2019,
-  },
-  {
-    id: 3,
-    text: "Lisbon is the capital of Portugal",
-    source: "https://en.wikipedia.org/wiki/Lisbon",
-    category: "society",
-    voteslikes: 8,
-    votesdislike: 3,
-    votescrazy: 1,
-    createdIn: 2015,
-  },
-];
 function App() {
   const [showForm, setForm] = useState(false);
   const [facts, setFacts] = useState([]);
-  useEffect(function () {
-    async function getFacts() {
-      const { data: facts, error } = await supabase.from("facts").select("*");
-      setFacts(facts);
-    }
-    getFacts();
-  }, []);
+  const [isLoading, setIsLoading] = useState(false);
+  const [currentCategory, setCurrentCategory] = useState("all");
+
+  useEffect(
+    function () {
+      setIsLoading(true);
+
+      let query = supabase.from("facts").select("*");
+
+      if (currentCategory !== "all")
+        query = query.eq("category", currentCategory);
+
+      async function getFacts() {
+        const { data: facts, error } = await query
+          .order("voteslike", { ascending: false })
+          .limit(1000);
+        if (!error) setFacts(facts);
+        else alert("ERROR");
+        setIsLoading(false);
+      }
+      getFacts();
+    },
+    [currentCategory]
+  );
 
   return (
     <>
@@ -69,15 +53,21 @@ function App() {
 
       <main className="main">
         {/* Side Bar */}
-        <CategoryFilter />
+        <CategoryFilter setCurrentCategory={setCurrentCategory} />
 
         {/* Facts */}
-        <FactsList facts={facts} />
+        {isLoading ? (
+          <Loader />
+        ) : (
+          <FactsList facts={facts} setFacts={setFacts} />
+        )}
       </main>
     </>
   );
 }
-
+function Loader() {
+  return <p className="loading-message">Loading...</p>;
+}
 function Header({ showForm, setForm }) {
   const appTitle = "Fun Facts";
 
@@ -100,25 +90,21 @@ function NewFactForm({ facts, setFacts, setForm }) {
   const [text, setText] = useState("");
   const [source, setSource] = useState("");
   const [category, setCategory] = useState("");
-  let newFact;
-  function handleSubmit(e) {
+  const [isUploading, setIsUploading] = useState(false);
+  async function handleSubmit(e) {
     e.preventDefault();
     console.log(text, source, category);
-
     if (text && text.length <= 200 && source && isUrl(source) && category) {
-      newFact = {
-        id: 300,
-        text,
-        source,
-        category,
-        voteslikes: 0,
-        votesdislike: 0,
-        votescrazy: 0,
-        createdIn: new Date().getFullYear(),
-      };
+      setIsUploading(true);
+      const { data: newFact, error } = await supabase
+        .from("facts")
+        .insert([{ text, source, category }])
+        .select();
+      setIsUploading(false);
+      if (!error) setFacts(() => [newFact[0], ...facts]);
+      else alert("ERROR");
+      setForm(false);
     }
-    setFacts(() => [newFact, ...facts]);
-    setForm(false);
   }
 
   return (
@@ -135,8 +121,13 @@ function NewFactForm({ facts, setFacts, setForm }) {
         placeholder="Source..."
         value={source}
         onChange={(e) => setSource(e.target.value)}
+        disabled={isUploading}
       />
-      <select value={category} onChange={(e) => setCategory(e.target.value)}>
+      <select
+        value={category}
+        onChange={(e) => setCategory(e.target.value)}
+        disabled={isUploading}
+      >
         <option value="">Choose a category</option>
         {CATEGORIES.map((cat) => (
           <option key={cat.name} value={cat.name}>
@@ -144,24 +135,32 @@ function NewFactForm({ facts, setFacts, setForm }) {
           </option>
         ))}
       </select>
-      <button className="btn btn-large">Post</button>
+      <button className="btn btn-large" disabled={isUploading}>
+        Post
+      </button>
     </form>
   );
 }
 
-function CategoryFilter() {
+function CategoryFilter({ setCurrentCategory }) {
   return (
     <aside className="sidebar">
       <ul className="categories">
         <li>
-          <button className="btn btn-category btn-category-all">All</button>
+          <button
+            className="btn btn-category btn-category-all"
+            onClick={() => setCurrentCategory("all")}
+          >
+            All
+          </button>
         </li>
         {CATEGORIES.map((cat) => (
-          <li>
+          <li key={cat.name}>
             <button
               key={cat.name}
               className="btn btn-category"
               style={{ backgroundColor: cat.color }}
+              onClick={() => setCurrentCategory(cat.name)}
             >
               {cat.name}
             </button>
@@ -172,20 +171,43 @@ function CategoryFilter() {
   );
 }
 
-function FactsList({ facts }) {
+function FactsList({ facts, setFacts }) {
+  if (facts.length === 0) {
+    return <p className="loading-message">No facts in current category</p>;
+  }
   return (
     <section className="facts">
       <ul className="facts-list">
         {facts.map((fact) => (
-          <Fact key={fact.id} fact={fact} />
+          <Fact key={fact.id} fact={fact} setFacts={setFacts} />
         ))}
       </ul>
-      <p>There are {facts.length} facts!</p>
+      {/* <p>There are {facts.length} facts!</p> */}
     </section>
   );
 }
 
-function Fact({ fact }) {
+function Fact({ fact, setFacts }) {
+  const [isUpdating, setIsUpdating] = useState(false);
+
+  async function handleVote(columnName) {
+    setIsUpdating(true);
+
+    const { data: updatedFact, error } = await supabase
+      .from("facts")
+      .update({ [columnName]: fact[columnName] + 1 })
+      .eq("id", fact.id)
+      .select();
+
+    console.log(updatedFact);
+    if (!error)
+      setFacts((facts) =>
+        facts.map((f) => (f.id === fact.id ? updatedFact[0] : f))
+      );
+    else alert("ERROR");
+    setIsUpdating(false);
+  }
+
   return (
     <li className="fact">
       <p>
@@ -205,13 +227,16 @@ function Fact({ fact }) {
         {fact.category}
       </span>
       <div className="reaction-btns">
-        <button>
-          👍 <strong>{fact.voteslikes}</strong>
+        <button onClick={() => handleVote("voteslike")} disabled={isUpdating}>
+          👍 <strong>{fact.voteslike}</strong>
         </button>
-        <button>
+        <button
+          onClick={() => handleVote("votesdislike")}
+          disabled={isUpdating}
+        >
           👎 <strong>{fact.votesdislike}</strong>
         </button>
-        <button>
+        <button onClick={() => handleVote("votescrazy")} disabled={isUpdating}>
           🤪 <strong>{fact.votescrazy}</strong>
         </button>
       </div>

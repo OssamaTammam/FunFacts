@@ -142,6 +142,12 @@ footer {
     cursor: pointer;
 }
 
+.reaction-btns button:disabled {
+    background-color: #474747;
+    cursor: pointer;
+}
+
+
 
 a:link,
 a:visited {
@@ -263,4 +269,10 @@ footer {
         bottom: 0;
         position: absolute;
     }
+}
+
+.loading-message {
+    font-size: 3rem;
+    margin-top: 2rem;
+    text-align: center;
 }
