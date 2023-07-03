@@ -219,7 +219,7 @@ function Fact({ fact, setFacts }) {
         ) : null}
         {fact.text}
         <br />
-        <a href="{fact.source}" target="_blank" className="source">
+        <a href={fact.source} target="_blank" className="source">
           (Source)
         </a>
       </p>
